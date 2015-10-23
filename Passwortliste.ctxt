@@ -1,0 +1,8 @@
+#BlueJ class context
+comment0.params=
+comment0.target=Passwortliste()
+comment1.params=pName\ pPasswort
+comment1.target=void\ adden(java.lang.String,\ java.lang.String)
+comment2.params=pName
+comment2.target=Userpass\ suchen(java.lang.String)
+numComments=3

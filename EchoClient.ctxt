@@ -1,0 +1,11 @@
+#BlueJ class context
+comment0.params=pServerIP\ pServerPort
+comment0.target=EchoClient(java.lang.String,\ int)
+comment0.text=\r\n\ Constructor\ for\ objects\ of\ class\ EchoClient\r\n
+comment1.params=text
+comment1.target=void\ nachrichtVersenden(java.lang.String)
+comment2.params=
+comment2.target=void\ beenden()
+comment3.params=pMessage
+comment3.target=void\ processMessage(java.lang.String)
+numComments=4
