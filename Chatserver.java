@@ -1,9 +1,9 @@
 
 /**
- * Write a description of class Echoserver here.
  * 
- * @author Norbert Gutsche 
- * @version 02.05.2012
+ * 
+ * @author  
+ * @version 
  */
 public class Chatserver extends Server
 {
@@ -43,11 +43,16 @@ public class Chatserver extends Server
         {
             this.sendToAll(pClientIP + " " + pClientPort + ": " + pMessage);
         }
+
+        char[] msg = pMessage.toCharArray();
+
         String[] separated = pMessage.split(" ");
         if (separated[0] != null)
         {
             switch (separated[0])
             {
+
+                /*Login mit !login <Username> <Passwort>*/
                 case "!login":
                 if (separated[1] != null && separated[2] != null)
                 {
@@ -57,11 +62,10 @@ public class Chatserver extends Server
                         String passwort = a.getPasswort();
                         if (passwort.equals(separated[2]))
                         {
-                            identitat.toFirst();
-                            while (identitat.hasAccess() && !identitat.isEmpty())
-                            {
-                                //if 
-                            }
+
+                            Identitaet user = this.getIdentitaet(pClientIP,pClientPort);
+                            if(user != null)
+                                user.setEingeloggt(true);
                         }
                     }
                 }
@@ -69,8 +73,20 @@ public class Chatserver extends Server
             }
         }
     }
-    
-    //private identitat
+
+    private Identitaet getIdentitaet(String pClientIp,int pClientPort)
+    {
+        identitat.toFirst();
+        while (identitat.hasAccess() && !identitat.isEmpty())
+        {
+            Identitaet a = (Identitaet) identitat.getObject();
+            if(a.getIp().equals(pClientIp) && a.getPort() == pClientPort)
+                return (Identitaet) identitat.getObject();
+            else
+                identitat.next();
+        }
+        return null;
+    }
 
     public void processClosedConnection(String pClientIP, int pClientPort)
     {

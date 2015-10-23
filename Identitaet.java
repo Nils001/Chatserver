@@ -22,7 +22,7 @@ public class Identitaet
         return name;
     }
     
-        public String getip()
+        public String getIp()
     {
         return ip;
     }
