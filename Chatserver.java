@@ -31,6 +31,7 @@ public class Chatserver extends Server
         this.sendToAll("Neue Verbindung von" + pClientIP + " auf Port " + pClientPort);
         send(pClientIP, pClientPort, "Bitte Eingloggen!!!!!11!!");
         Identitaet a = new Identitaet(pClientIP, pClientPort);
+        identitat.append(a);
     }
 
     public void processMessage(String pClientIP, int pClientPort, String pMessage)
