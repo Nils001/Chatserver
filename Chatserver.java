@@ -73,8 +73,10 @@ public class Chatserver extends Server
                             String passwort = a.getPasswort();
                             if (passwort.equals(separated[2]))
                             {
+                                Identitaet huser = this.getIdentitaet2(separated[1]); //???????
                                 Identitaet user = this.getIdentitaet(pClientIP,pClientPort);
-                                if (user.getEingeloggt() == false)
+                                System.out.println(user.getEingeloggt());
+                                if (huser.getEingeloggt() == false)
                                 {
                                     if(user != null)
                                     {
@@ -89,7 +91,6 @@ public class Chatserver extends Server
                                 }
                                 else 
                                 {
-                                    Identitaet huser = this.getIdentitaet2(separated[1]);
                                     huser.setEingeloggt(false);
                                     huser.setName(null);
                                     String bClientIP = huser.getIp();
