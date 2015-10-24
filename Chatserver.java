@@ -41,10 +41,7 @@ public class Chatserver extends Server
             {
                 this.closeConnection(pClientIP, pClientPort);
             }
-            else
-            {
-                this.sendToAll(pClientIP + " " + pClientPort + ": " + pMessage);
-            }
+            
 
             char[] msg = pMessage.toCharArray();
             char aus = '!';

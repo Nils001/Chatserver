@@ -31,7 +31,7 @@ public class ChatClient extends Client
     
     public void processMessage(String pMessage)
     {
-        System.out.println("Der Server sendet: " + pMessage);
+        System.out.println(pMessage);
     }
     
 }
