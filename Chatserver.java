@@ -35,38 +35,54 @@ public class Chatserver extends Server
 
     public void processMessage(String pClientIP, int pClientPort, String pMessage)
     {
-        if (pMessage.equals(ENDE))
+        if(pMessage != null)
         {
-            this.closeConnection(pClientIP, pClientPort);
-        }
-        else
-        {
-            this.sendToAll(pClientIP + " " + pClientPort + ": " + pMessage);
-        }
-
-        char[] msg = pMessage.toCharArray();
-
-        String[] separated = pMessage.split(" ");
-        if (separated[0] != null)
-        {
-            switch (separated[0])
+            if (pMessage.equals(ENDE))
             {
+                this.closeConnection(pClientIP, pClientPort);
+            }
+            else
+            {
+                this.sendToAll(pClientIP + " " + pClientPort + ": " + pMessage);
+            }
 
-                /*Login mit !login <Username> <Passwort>*/
-                case "!login":
-                if (separated[1] != null && separated[2] != null)
+            char[] msg = pMessage.toCharArray();
+            char aus = '!';
+            if(msg[0]!=(aus))
+            {
+                if(this.getIdentitaet(pClientIP,pClientPort).getEingeloggt())
                 {
-                    Userpass a = passwortliste.suchen(separated[1]);
-                    if (a != null)
-                    {
-                        String passwort = a.getPasswort();
-                        if (passwort.equals(separated[2]))
-                        {
+                    this.sendToAll(pMessage);
+                }
+                else
+                {
+                    this.send(pClientIP,pClientPort,"Bitte zuerst einloggen!");
+                }
 
-                            Identitaet user = this.getIdentitaet(pClientIP,pClientPort);
-                            if(user != null)
-                                user.setEingeloggt(true);
+                String[] separated = pMessage.split(" ");
+                if (separated[0] != null)
+                {
+                    switch (separated[0])
+                    {
+
+                        /*Login mit !login <Username> <Passwort>*/
+                        case "!login":
+                        if (separated[1] != null && separated[2] != null)
+                        {
+                            Userpass a = passwortliste.suchen(separated[1]);
+                            if (a != null)
+                            {
+                                String passwort = a.getPasswort();
+                                if (passwort.equals(separated[2]))
+                                {
+
+                                    Identitaet user = this.getIdentitaet(pClientIP,pClientPort);
+                                    if(user != null)
+                                        user.setEingeloggt(true);
+                                }
+                            }
                         }
+
                     }
                 }
 
