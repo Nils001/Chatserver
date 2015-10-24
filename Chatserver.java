@@ -76,7 +76,8 @@ public class Chatserver extends Server
                                 Identitaet huser = this.getIdentitaet2(separated[1]); //???????
                                 Identitaet user = this.getIdentitaet(pClientIP,pClientPort);
                                 System.out.println(user.getEingeloggt());
-                                if (huser.getEingeloggt() == false)
+
+                                if (huser == null)
                                 {
                                     if(user != null)
                                     {
@@ -199,9 +200,16 @@ public class Chatserver extends Server
         while (identitat.hasAccess() && !identitat.isEmpty())
         {
             Identitaet a = (Identitaet) identitat.getObject();
-            if(a.getName().equals(pName))
+            if (a.getName() != null)
             {
-                return (Identitaet) identitat.getObject();
+                if(a.getName().equals(pName))
+                {
+                    return (Identitaet) identitat.getObject();
+                }
+                else
+                {
+                    identitat.next();
+                }
             }
             else
             {
