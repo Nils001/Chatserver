@@ -74,14 +74,30 @@ public class Chatserver extends Server
                             if (passwort.equals(separated[2]))
                             {
                                 Identitaet user = this.getIdentitaet(pClientIP,pClientPort);
-                                if(user != null)
+                                if (user.getEingeloggt() == false)
                                 {
-                                    user.setEingeloggt(true);
-                                    send(pClientIP, pClientPort, "Anmeldung war erfolgreich!");
+                                    if(user != null)
+                                    {
+                                        user.setEingeloggt(true);
+                                        user.setName(separated[1]);
+                                        send(pClientIP, pClientPort, "Anmeldung war erfolgreich!");
+                                    }
+                                    else
+                                    {
+                                        send(pClientIP, pClientPort, "Identität ist nicht bekannt!");
+                                    }
                                 }
-                                else
+                                else 
                                 {
-                                    send(pClientIP, pClientPort, "Identität ist nicht bekannt!");
+                                    Identitaet huser = this.getIdentitaet2(separated[1]);
+                                    huser.setEingeloggt(false);
+                                    huser.setName(null);
+                                    String bClientIP = huser.getIp();
+                                    int bClientPort = huser.getPort();
+                                    send(bClientIP, bClientPort, "Sie wurden abgemeldet!");
+                                    user.setEingeloggt(true);
+                                    user.setName(separated[1]);
+                                    send(pClientIP, pClientPort, "Anmeldung war erfolgreich!!");
                                 }
                             }
                             else
@@ -103,6 +119,7 @@ public class Chatserver extends Server
                     case "!logout":
                     Identitaet user = this.getIdentitaet(pClientIP,pClientPort);
                     user.setEingeloggt(false);
+                    user.setName(null);
                     send(pClientIP, pClientPort, "Erfolgreich abgemeldet!");
                     break;
 

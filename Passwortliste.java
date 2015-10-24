@@ -6,6 +6,7 @@ public class Passwortliste
     {
         benutzer = new List();
         adden("admin", "admin");
+        adden("user", "user");
     }
 
     public void adden(String pName, String pPasswort)

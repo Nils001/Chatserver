@@ -2,7 +2,7 @@
 comment0.params=bIP\ bPort
 comment0.target=Identitaet(java.lang.String,\ int)
 comment1.params=bname
-comment1.target=void\ setname(java.lang.String)
+comment1.target=void\ setName(java.lang.String)
 comment2.params=
 comment2.target=java.lang.String\ getName()
 comment3.params=

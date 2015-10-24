@@ -12,7 +12,7 @@ public class Identitaet
         eingeloggt = false;
     }
     
-    public void setname(String bname)
+    public void setName(String bname)
     {
         name = bname;
     }
