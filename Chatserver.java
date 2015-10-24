@@ -42,12 +42,12 @@ public class Chatserver extends Server
             {
                 this.closeConnection(pClientIP, pClientPort);
             }
-            
 
             char[] msg = pMessage.toCharArray();
             char aus = '!';
             if(msg[0]!=(aus))
             {
+                send(pClientIP, pClientPort, "check 1");
                 if(this.getIdentitaet(pClientIP,pClientPort).getEingeloggt())
                 {
                     this.sendToAll(pMessage);
@@ -56,34 +56,37 @@ public class Chatserver extends Server
                 {
                     this.send(pClientIP,pClientPort,"Bitte zuerst einloggen!");
                 }
+            }
 
-                String[] separated = pMessage.split(" ");
-                if (separated[0] != null)
+            String[] separated = pMessage.split(" ");
+            if (separated[0] != null)
+            {
+                send(pClientIP, pClientPort, separated[0]);
+                send(pClientIP, pClientPort, separated[1]);
+                send(pClientIP, pClientPort, separated[2]);
+                switch (separated[0])
                 {
-                    switch (separated[0])
+
+                    /*Login mit !login <Username> <Passwort>*/
+                    case "!login":
+                    if (separated[1] != null && separated[2] != null)
                     {
-
-                        /*Login mit !login <Username> <Passwort>*/
-                        case "!login":
-                        if (separated[1] != null && separated[2] != null)
+                        Userpass a = passwortliste.suchen(separated[1]);
+                        if (a != null)
                         {
-                            Userpass a = passwortliste.suchen(separated[1]);
-                            if (a != null)
+                            String passwort = a.getPasswort();
+                            if (passwort.equals(separated[2]))
                             {
-                                String passwort = a.getPasswort();
-                                if (passwort.equals(separated[2]))
+                                Identitaet user = this.getIdentitaet(pClientIP,pClientPort);
+                                if(user != null)
                                 {
-
-                                    Identitaet user = this.getIdentitaet(pClientIP,pClientPort);
-                                    if(user != null)
-                                        user.setEingeloggt(true);
+                                    user.setEingeloggt(true);
+                                    send(pClientIP, pClientPort, "Anmeldung war erfolgreich!");
                                 }
                             }
                         }
-
                     }
                 }
-
             }
         }
     }
