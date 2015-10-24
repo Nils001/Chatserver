@@ -47,7 +47,6 @@ public class Chatserver extends Server
             char aus = '!';
             if(msg[0]!=(aus))
             {
-                send(pClientIP, pClientPort, "check 1");
                 if(this.getIdentitaet(pClientIP,pClientPort).getEingeloggt())
                 {
                     this.sendToAll(pMessage);
@@ -61,9 +60,6 @@ public class Chatserver extends Server
             String[] separated = pMessage.split(" ");
             if (separated[0] != null)
             {
-                send(pClientIP, pClientPort, separated[0]);
-                send(pClientIP, pClientPort, separated[1]);
-                send(pClientIP, pClientPort, separated[2]);
                 switch (separated[0])
                 {
 
@@ -83,9 +79,79 @@ public class Chatserver extends Server
                                     user.setEingeloggt(true);
                                     send(pClientIP, pClientPort, "Anmeldung war erfolgreich!");
                                 }
+                                else
+                                {
+                                    send(pClientIP, pClientPort, "Identität ist nicht bekannt!");
+                                }
+                            }
+                            else
+                            {
+                                send(pClientIP, pClientPort, "Falsche Benutzerdaten!");
                             }
                         }
+                        else
+                        {
+                            send(pClientIP, pClientPort, "Falsche Benutzerdaten!");
+                        }
                     }
+                    else
+                    {
+                        send(pClientIP, pClientPort, "Bitte Benutzername und Passwort eingeben!");
+                    }
+                    break;
+
+                    case "!logout":
+                    Identitaet user = this.getIdentitaet(pClientIP,pClientPort);
+                    user.setEingeloggt(false);
+                    send(pClientIP, pClientPort, "Erfolgreich abgemeldet!");
+                    break;
+
+                    case "!updaterequest":
+                    break;
+
+                    case "!quit":
+                    this.closeConnection(pClientIP, pClientPort);
+                    break;
+
+                    /*Private Nachricht mit !p <Username> <Nachricht>*/
+                    case "!p":
+                    if (separated[1] != null)
+                    {
+                        if (separated[2] != null)
+                        {
+                            Identitaet huser = this.getIdentitaet2(separated[1]);
+                            String eClientIP = huser.getIp();
+                            int eClientPort = huser.getPort();
+                            int a = 3;
+                            String message = separated[2];
+                            while (separated[a] != null)
+                            {
+                                message = message + " " + separated[a];
+                            }
+                            send(eClientIP, eClientPort, message);
+                        }
+                        else
+                        {
+                            send(pClientIP, pClientPort, "Bitte Nachricht eingeben!");
+                        }
+                    }
+                    else
+                    {
+                        send(pClientIP, pClientPort, "Bitte Empfänger angeben!");
+                    }
+                    break;
+
+                    /*Raum betreten mit !r <Raumnummer>*/
+                    case "!r":
+                    if (separated[1] != null)
+                    {
+                        //joinRoom(separated[1]); 
+                    }
+                    else
+                    {
+                        send(pClientIP, pClientPort, "Bitte Raumnummer eingeben!");
+                    }
+                    break;
                 }
             }
         }
@@ -98,9 +164,31 @@ public class Chatserver extends Server
         {
             Identitaet a = (Identitaet) identitat.getObject();
             if(a.getIp().equals(pClientIp) && a.getPort() == pClientPort)
+            {
                 return (Identitaet) identitat.getObject();
+            }
             else
+            {
                 identitat.next();
+            }
+        }
+        return null;
+    }
+
+    private Identitaet getIdentitaet2(String pName)
+    {
+        identitat.toFirst();
+        while (identitat.hasAccess() && !identitat.isEmpty())
+        {
+            Identitaet a = (Identitaet) identitat.getObject();
+            if(a.getName().equals(pName))
+            {
+                return (Identitaet) identitat.getObject();
+            }
+            else
+            {
+                identitat.next();
+            }
         }
         return null;
     }
