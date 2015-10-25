@@ -9,7 +9,7 @@ public class Chatserver extends Server
 {
     // instance variables - replace the example below with your own
     private final String ENDE = "*bye*";
-    private List identitat;
+    private List identitat, raum;
     private Passwortliste passwortliste;
 
     /**
@@ -19,6 +19,7 @@ public class Chatserver extends Server
     {
         super (2000);   //Port 2000 ist der Port des Echoservers
         identitat = new List();
+        raum = new List();
         passwortliste = new Passwortliste();
     }
 
@@ -160,11 +161,56 @@ public class Chatserver extends Server
                     }
                     break;
 
-                    /*Raum betreten mit !r <Raumnummer>*/
-                    case "!r":
+                    /*Raum betreten mit !joinroom <Raumnummer> <Passwort>*/
+                    case "!joinroom":
                     if (separated[1] != null)
                     {
-                        //joinRoom(separated[1]); 
+                        raum.toFirst();
+                        int b = Integer.parseInt(separated[1]);
+                        while (raum.hasAccess() && !raum.isEmpty())
+                        {
+                            Room a = (Room) raum.getObject();
+                            if(a.getRoomid() == b)
+                            {
+                                if (a.checkPassword(separated[2]))
+                                {
+                                    a.addUser(this.getIdentitaet(pClientIP, pClientPort));
+                                    send(pClientIP, pClientPort, "Erfolgreich Raum " + b + "beigerteten");
+                                    break;
+                                }
+                                else
+                                {
+                                    send(pClientIP, pClientPort, "Falsches Passwort!");
+                                }
+                            }
+                            else
+                            {
+                                raum.next();
+                            }
+                        }
+                    }
+                    else
+                    {
+                        send(pClientIP, pClientPort, "Bitte Raumnummer eingeben!");
+                    }
+                    break;
+
+                    /*Raum erstellen mit !createroom <Raumnummer> <Passowrt>*/
+                    case "!createroom":
+                    if (separated[1] != null)
+                    {
+                        if (separated[2] != null)
+                        {
+                            int b = Integer.parseInt(separated[1]);
+                            Room a = new Room(b, separated[2]);
+                            raum.append(a);
+                        }
+                        else
+                        {
+                            int b = Integer.parseInt(separated[1]);
+                            Room a = new Room(b, null);
+                            raum.append(a);
+                        }
                     }
                     else
                     {
