@@ -1,17 +1,17 @@
 
 
 
-public class Room
+public class UserRoom
 {
     private List userlist;
     private int roomid;
-    private String password;
+    
 
     //null für Raum ohne PW
-    public Room(int pRoomid, String pPassword)
+    public UserRoom(int pRoomid)
     {
         roomid = pRoomid;
-        password = pPassword;
+        
         userlist = new List();
     }
 
@@ -19,19 +19,7 @@ public class Room
     {
         return roomid;
     }
-
-    public boolean checkPassword(String pPassword)
-    {
-        if (password.equals(pPassword))
-        {
-            return true;
-        }
-        else
-        {
-            return false;
-        }
-    }
-
+    
     public Identitaet searchUser(String pName)
     {
         if (pName != null)
@@ -99,37 +87,6 @@ public class Room
             }
         }
     }
-    public List getList()
-    {
-    
-        return this.userlist;
-    
-    }
-    public void removeUser(String pName)
-    {
-        if (pName != null)
-        {
-            userlist.toFirst();
-            while (userlist.hasAccess() && !userlist.isEmpty())
-            {
-                Identitaet a = (Identitaet) userlist.getObject();
-                if (a.getName() != null)
-                {
-                    if(a.getName().equals(pName))
-                    {
-                        userlist.remove();
-                    }
-                    else
-                    {
-                        userlist.next();
-                    }
-                }
-                else
-                {
-                    userlist.next();
-                }
-            }
-        }
-    }
-    
+
+   
 }

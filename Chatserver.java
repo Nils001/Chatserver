@@ -1,10 +1,11 @@
-
+import org.json.*;
 /**
  * 
  * 
  * @author  
  * @version 
  */
+
 public class Chatserver extends Server
 {
     // instance variables - replace the example below with your own
@@ -127,6 +128,30 @@ public class Chatserver extends Server
                     break;
 
                     case "!updaterequest":
+                    JSONObject update = new JSONObject();
+                    raum.toFirst();
+                    int raumid = 0;
+                    while(raum.hasAccess()&&!raum.isEmpty()) // geht durch alle Räume
+                    {
+
+                        Room pr =(Room) raum.getObject();
+                        raum.toFirst();
+                        List puser = pr.getList();
+                        puser.toFirst();
+                        int i = 0;
+                        JSONArray preU = new JSONArray();
+                        while(puser.hasAccess()&& !puser.isEmpty()) // Geht durch alle User eines Raumes
+                        {
+                            Userpass pu = (Userpass) puser.getObject();
+                            String a = pu.getName();
+                            try{
+                                preU.put(i,a);
+                            }
+                            catch(Exception e)
+                            {
+                            }
+                        }
+                    }
                     break;
 
                     case "!quit":
