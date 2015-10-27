@@ -32,7 +32,7 @@ public class Chatserver extends Server
         if(pMessage != null)
         {
             if (pMessage.equals(ENDE))
-            {
+            { 
                 this.closeConnection(pClientIP, pClientPort);
             }
 
@@ -110,37 +110,37 @@ public class Chatserver extends Server
                     }
                     break;
 
-                    case "!logout":
+                    case "!logout": //nur wenn angemeldet
                     Identitaet user = this.getIdentitaet(pClientIP,pClientPort);
                     user.setEingeloggt(false);
                     user.setName(null);
                     send(pClientIP, pClientPort, "Erfolgreich abgemeldet!");
                     break;
 
-                    /*case "!updaterequest":
+                    /*case "!updaterequest": //nur wenn angemeldet
                     JSONObject update = new JSONObject();
                     raum.toFirst();
                     int raumid = 0;
                     while(raum.hasAccess()&&!raum.isEmpty()) // geht durch alle Räume
                     {
-                        Room pr =(Room) raum.getObject();
-                        raum.toFirst();
-                        List puser = pr.getList();
-                        puser.toFirst();
-                        int i = 0;
-                        JSONArray preU = new JSONArray();
-                        while(puser.hasAccess()&& !puser.isEmpty()) //geht durch alle User eines Raumes
-                        {
-                            Userpass pu = (Userpass) puser.getObject();
-                            String a = pu.getName();
-                            try{
-                                preU.put(i,a);
-                            }
-                            catch(Exception e)
-                            {
-                                
-                            }
-                        }
+                    Room pr =(Room) raum.getObject();
+                    raum.toFirst();
+                    List puser = pr.getList();
+                    puser.toFirst();
+                    int i = 0;
+                    JSONArray preU = new JSONArray();
+                    while(puser.hasAccess()&& !puser.isEmpty()) //geht durch alle User eines Raumes
+                    {
+                    Userpass pu = (Userpass) puser.getObject();
+                    String a = pu.getName();
+                    try{
+                    preU.put(i,a);
+                    }
+                    catch(Exception e)
+                    {
+
+                    }
+                    }
                     }
                     break;*/
 
@@ -149,7 +149,7 @@ public class Chatserver extends Server
                     break;
 
                     /*Private Nachricht mit !p <Username> <Nachricht>*/
-                    case "!p":
+                    case "!p": //nur wenn angemeldet
                     if (separated[1] != null)
                     {
                         if (separated[2] != null)
@@ -176,8 +176,8 @@ public class Chatserver extends Server
                     }
                     break;
 
-                    /*Raum betreten mit !joinroom <Raumnummer> <Passwort>*/
-                    case "!joinroom":
+                    /*Raum betreten mit !jr <Raumnummer> <Passwort>*/
+                    case "!jr": //nur wenn angemeldet
                     if (separated[1] != null)
                     {
                         raum.toFirst();
@@ -189,13 +189,14 @@ public class Chatserver extends Server
                             {
                                 if (a.checkPassword(separated[2]))
                                 {
-                                    a.addUser(this.getIdentitaet(pClientIP, pClientPort));
-                                    send(pClientIP, pClientPort, "Erfolgreich Raum " + b + "beigerteten");
+                                    a.addUser(this.getIdentitaet(pClientIP, pClientPort));      //name und status wird nicht übernommen 
+                                    send(pClientIP, pClientPort, "Erfolgreich Raum " + b + " beigerteten");
                                     break;
                                 }
                                 else
                                 {
                                     send(pClientIP, pClientPort, "Falsches Passwort!");
+                                    break;
                                 }
                             }
                             else
@@ -210,11 +211,11 @@ public class Chatserver extends Server
                     }
                     break;
 
-                    /*Raum erstellen mit !createroom <Raumnummer> <Passowrt>*/
-                    case "!createroom":
+                    /*Raum erstellen mit !cr <Raumnummer> <Passowrt>*/
+                    case "!cr": //nur wenn angemeldet
                     if (separated[1] != null)
                     {
-                        if (separated[2] != null)
+                        if (separated[2] != null)   //gibt errors wenn kein passwort
                         {
                             int b = Integer.parseInt(separated[1]);
                             Room a = new Room(b, separated[2]);
