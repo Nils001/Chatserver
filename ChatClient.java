@@ -31,15 +31,26 @@ public class ChatClient extends Client
 
     public void processMessage(String pMessage)
     {
-        System.out.println(pMessage);
-        String[] separated_ur = pMessage.split(" ", 2);
-        if(separated_ur[0] != null)
+        if(pMessage != null)
         {
-            switch (separated_ur[0])
+            char[] msg = pMessage.toCharArray();
+            char aus = '!';
+            if(msg[0]!=(aus))
             {
-                case "!ur":
+                System.out.println(pMessage);
+            }
+            else
+            {
+                String[] separated_ur = pMessage.split(" ", 2);
+                if(separated_ur[0] != null)
+                {
+                    switch (separated_ur[0])
+                    {
+                        case "!ur":
 
-                break;
+                        break;
+                    }
+                }
             }
         }
     }
