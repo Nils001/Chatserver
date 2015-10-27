@@ -1,6 +1,4 @@
 
-
-
 public class Room
 {
     private List userlist;
@@ -99,12 +97,12 @@ public class Room
             }
         }
     }
+
     public List getList()
     {
-    
         return this.userlist;
-    
     }
+
     public void removeUser(String pName)
     {
         if (pName != null)
@@ -131,5 +129,4 @@ public class Room
             }
         }
     }
-    
 }

@@ -1,4 +1,3 @@
- 
 
 /**
  * <p>Materialien zu den zentralen
@@ -23,41 +22,46 @@
  * @version 2011-03-31
  */
 public class List
-
-{ private Node first, tail, current;
+{ 
+    private Node first, tail, current;
 
     // Node
-  private class Node { 
+    private class Node 
+    { 
         private Object contentObj;
         private Node nextNode;
 
-        public Node(Object pContent) { 
+        public Node(Object pContent) 
+        { 
             contentObj = pContent;
             nextNode = null;
         }
 
-        public void setContent(Object pContent) { 
+        public void setContent(Object pContent) 
+        { 
             contentObj = pContent; 
         }
 
-        public Object content() { 
+        public Object content() 
+        { 
             return contentObj; 
         }
 
-        public void setNext(Node pNext) { 
+        public void setNext(Node pNext) 
+        { 
             nextNode = pNext; 
         }
 
         public Node getNext() { 
             return nextNode; 
         }
-
     } // Ende der Klasse Node
- 
+
     /**
      * Eine leere Liste wird erzeugt.
      */
-    public List() {
+    public List() 
+    {
         tail = new Node(null); // Dummy
         first = tail;
         tail.setNext(tail);
@@ -66,26 +70,28 @@ public class List
          */
         current=first;
     }
-  
+
     /**
      * Die Anfrage liefert den Wert true, wenn die Liste 
      * keine Objekte enthaelt, sonst liefert sie den Wert false.
      * @return true, wenn die Liste leer ist, sonst false
      */
-    public boolean isEmpty() { 
+    public boolean isEmpty() 
+    { 
         return first == tail; 
     }
- 
+
     /**
      * Die Anfrage liefert den Wert true, wenn es ein
      * aktuelles Objekt gibt, sonst 
      * liefert sie den Wert false.
      * @return true, falls Zugriff moeglich, sonst false
      */
-    public boolean hasAccess() { 
+    public boolean hasAccess() 
+    { 
         return (!this.isEmpty()) && (current != tail);
     }
-  
+
     /**
      * Falls die Liste nicht leer ist, es ein aktuelles 
      * Objekt gibt und dieses nicht das letzte Objekt der 
@@ -94,29 +100,38 @@ public class List
      * es nach Ausführung des Auftrags kein aktuelles Objekt, 
      * d.h. hasAccess() liefert den Wert false.
      */
-    public void next() { 
+    public void next() 
+    { 
         if (this.hasAccess())
+        {
             current = current.getNext();
+        }
     }
- 
+
     /**
      * Falls die Liste nicht leer ist, wird das erste 
      * Objekt der Liste aktuelles Objekt. 
      * Ist die Liste leer, geschieht nichts.
      */
-    public void toFirst() {
+    public void toFirst() 
+    {
         if (!this.isEmpty())  
+        {
             current = first; 
+        }
     }
- 
+
     /**
      * Falls die Liste nicht leer ist, wird das 
      * letzte Objekt der Liste aktuelles Objekt. 
      * Ist die Liste leer, geschieht nichts.
      */
-    public void toLast() {
+    public void toLast() 
+    {
         if (!this.isEmpty())  
+        {
             current = tail.getNext(); 
+        }
     }
 
     /**
@@ -126,22 +141,30 @@ public class List
      * gibt die Anfrage den Wert null zurueck.
      * @return Inhaltsobjekt
      */
-    public Object getObject() {   
+    public Object getObject() 
+    {   
         if (this.hasAccess())
+        {
             return current.content();
+        }
         else 
+        {
             return null;
+        }
     }
- 
+
     /**
      * Falls es ein aktuelles Objekt gibt (hasAccess() == true)
      * und pObject ungleich null ist, wird das aktuelle Objekt 
      * durch pObject ersetzt. Sonst bleibt die Liste unveraendert.
      * @param pObject Inhaltsobjekt
      */
-    public void setObject(Object pObject) { 
-        if (pObject != null && this.hasAccess() )
+    public void setObject(Object pObject) 
+    { 
+        if (pObject != null && this.hasAccess())
+        {
             current.setContent(pObject); 
+        }
     }
 
     /**
@@ -153,15 +176,20 @@ public class List
      * bleibt die Liste unveraendert. 
      *@param pObject Inhaltsobject
      */    
-    public void append(Object pObject) { 
-        if (pObject != null) {  
+    public void append(Object pObject) 
+    { 
+        if (pObject != null) 
+        {  
             Node lNewNode,lPos0;
             lPos0 = current;
             lNewNode = new Node(pObject);
             lNewNode.setNext(tail);
             if (this.isEmpty())
+            {
                 first = lNewNode;
-            else {  
+            }
+            else 
+            {  
                 Node lPrevious = tail.getNext();
                 lPrevious.setNext(lNewNode);
             }  
@@ -181,29 +209,38 @@ public class List
      *pObject gleich null ist, bleibt die Liste unveraendert.
      *@param pObject Inhaltsobjekt
      */
-    public void insert(Object pObject) {
-        if (pObject != null) {
-          Node lNewNode,lFront,lPos;
-          if (this.isEmpty())
-            this.append(pObject);
-          else 
-          if (this.hasAccess() ) {
-            lPos = current;
-            lNewNode = new Node(pObject);
-            lNewNode.setNext(current);
-            if (lPos == first )
-              first = lNewNode;
-            else {
-              this.toFirst();
-              lFront = current;
-              while (this.hasAccess() & !(current == lPos)) {
-                 lFront = current;
-                 this.next();
-              }
-              lFront.setNext(lNewNode);  
-            }          
-            current=lPos;
-          }
+    public void insert(Object pObject) 
+    {
+        if (pObject != null) 
+        {
+            Node lNewNode,lFront,lPos;
+            if (this.isEmpty())
+            {
+                this.append(pObject);
+            }
+            else 
+            if (this.hasAccess()) 
+            {
+                lPos = current;
+                lNewNode = new Node(pObject);
+                lNewNode.setNext(current);
+                if (lPos == first)
+                {
+                    first = lNewNode;
+                }
+                else 
+                {
+                    this.toFirst();
+                    lFront = current;
+                    while (this.hasAccess() & !(current == lPos)) 
+                    {
+                        lFront = current;
+                        this.next();
+                    }
+                    lFront.setNext(lNewNode);  
+                }          
+                current=lPos;
+            }
         }
     }
 
@@ -214,34 +251,42 @@ public class List
      * unveraendert.
      * @param pList Liste
      */
-    public void concat(List pList) {
-      Node lCurrent1, lCurrent2, lPos0;
-      if (pList != null && !pList.isEmpty() ) {
-        if (this.isEmpty() ) {
-          first = pList.first;
-          tail = pList.tail;
-          current = tail;
+    public void concat(List pList) 
+    {
+        Node lCurrent1, lCurrent2, lPos0;
+        if (pList != null && !pList.isEmpty()) 
+        {
+            if (this.isEmpty()) 
+            {
+                first = pList.first;
+                tail = pList.tail;
+                current = tail;
+            }
+            else 
+            {
+                lPos0 = current;
+                current = tail.getNext();
+                lCurrent1 = current;
+                pList.toFirst();
+                current = pList.current;
+                lCurrent2 = pList.current;
+                lCurrent1.setNext(lCurrent2);
+                if (lPos0 != tail)
+                {
+                    current = lPos0;
+                }
+                else
+                {
+                    current = pList.tail;
+                }
+                tail = pList.tail;
+            }
+            // pList wird zur leeren Liste
+            pList.tail = new Node(null); // Dummy
+            pList.first = pList.tail;
+            pList.tail.setNext(tail);
+            pList.current = pList.tail;
         }
-        else {
-          lPos0 = current;
-          current = tail.getNext();
-          lCurrent1 = current;
-          pList.toFirst();
-          current = pList.current;
-          lCurrent2 = pList.current;
-          lCurrent1.setNext(lCurrent2);
-          if (lPos0 != tail)
-            current = lPos0;
-          else
-            current = pList.tail;
-          tail = pList.tail;
-        }
-        // pList wird zur leeren Liste
-        pList.tail = new Node(null); // Dummy
-        pList.first = pList.tail;
-        pList.tail.setNext(tail);
-        pList.current = pList.tail;
-      }
     }
 
     /**
@@ -253,29 +298,37 @@ public class List
      * leer ist oder es kein aktuelles Objekt gibt (hasAccess() == false),
      * bleibt die Liste unveraendert.
      */
-    public void remove() { 
+    public void remove() 
+    { 
         Node lPos, lFront;
-        if (this.hasAccess() ) {
-            if (current == first ) {
+        if (this.hasAccess()) 
+        {
+            if (current == first ) 
+            {
                 first = current.getNext();
                 if (current.getNext() == tail)
+                { 
                     tail.setNext(first);
+                }
                 current = first;  
             }
-            else {
+            else 
+            {
                 lPos = current;
                 this.toFirst();
                 lFront = current;
-                while (this.hasAccess() && !(current == lPos)) {
+                while (this.hasAccess() && !(current == lPos)) 
+                {
                     lFront = current;
                     this.next();
                 }
                 lFront.setNext(lPos.getNext());
                 current = lFront.getNext();
                 if (current == tail)
+                {
                     tail.setNext(lFront);
+                }
             }  
         }
     }  
-
 }

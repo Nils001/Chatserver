@@ -1,5 +1,4 @@
 
-
 public class Userpass
 {
     private String name, passwort;

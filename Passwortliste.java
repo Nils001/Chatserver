@@ -1,9 +1,8 @@
 
-
-
 public class Passwortliste
 {
     private List benutzer;
+    
     public Passwortliste()
     {
         benutzer = new List();

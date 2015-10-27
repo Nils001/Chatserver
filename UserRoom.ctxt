@@ -1,0 +1,12 @@
+#BlueJ class context
+comment0.params=pRoomid
+comment0.target=UserRoom(int)
+comment1.params=
+comment1.target=int\ getRoomid()
+comment2.params=pName
+comment2.target=Identitaet\ searchUser(java.lang.String)
+comment3.params=pName
+comment3.target=boolean\ checkUser(java.lang.String)
+comment4.params=pIdentitaet
+comment4.target=void\ addUser(Identitaet)
+numComments=5

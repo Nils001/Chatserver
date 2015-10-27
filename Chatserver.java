@@ -1,10 +1,4 @@
 import org.json.*;
-/**
- * 
- * 
- * @author  
- * @version 
- */
 
 public class Chatserver extends Server
 {
@@ -13,12 +7,9 @@ public class Chatserver extends Server
     private List identitat, raum;
     private Passwortliste passwortliste;
 
-    /**
-     * Constructor for objects of class Echoserver
-     */
     public Chatserver()
     {
-        super (2000);   //Port 2000 ist der Port des Echoservers
+        super (2000);   //Port 2000 ist der Port des CHatservers
         identitat = new List();
         raum = new List();
         passwortliste = new Passwortliste();
@@ -133,7 +124,6 @@ public class Chatserver extends Server
                     int raumid = 0;
                     while(raum.hasAccess()&&!raum.isEmpty()) // geht durch alle Räume
                     {
-
                         Room pr =(Room) raum.getObject();
                         raum.toFirst();
                         List puser = pr.getList();

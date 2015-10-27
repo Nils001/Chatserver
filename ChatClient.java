@@ -1,10 +1,4 @@
 
-/**
- * Write a description of class ChatClient here.
- * 
- * @author Norbert Gutsche
- * @version 09.05.12
- */
 public class ChatClient extends Client
 {
     List room;
@@ -15,7 +9,7 @@ public class ChatClient extends Client
     public ChatClient(String pServerIP, int pServerPort)
     {
         super(pServerIP, pServerPort); 
-        List room=new List();
+        List room = new List();
 
     }
 
@@ -39,22 +33,14 @@ public class ChatClient extends Client
     {
         System.out.println(pMessage);
         String[] separated_ur = pMessage.split(" ", 2);
-        if(separated[0] != null)
+        if(separated_ur[0] != null)
         {
             switch (separated_ur[0])
             {
-                case "!ur"
-                
-                
-                
-                
-                break;
-                
-                
-                
-            }
+                case "!ur":
 
-        
+                break;
+            }
         }
     }
 }

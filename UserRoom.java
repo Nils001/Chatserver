@@ -1,17 +1,13 @@
 
-
-
 public class UserRoom
 {
     private List userlist;
     private int roomid;
-    
 
     //null für Raum ohne PW
     public UserRoom(int pRoomid)
     {
         roomid = pRoomid;
-        
         userlist = new List();
     }
 
@@ -19,7 +15,7 @@ public class UserRoom
     {
         return roomid;
     }
-    
+
     public Identitaet searchUser(String pName)
     {
         if (pName != null)
@@ -87,6 +83,4 @@ public class UserRoom
             }
         }
     }
-
-   
 }
