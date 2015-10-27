@@ -1,4 +1,4 @@
-import org.json.*;
+//import org.json.*;
 
 public class Chatserver extends Server
 {
@@ -68,7 +68,6 @@ public class Chatserver extends Server
                             {
                                 Identitaet huser = this.getIdentitaet2(separated[1]); //???????
                                 Identitaet user = this.getIdentitaet(pClientIP,pClientPort);
-                                System.out.println(user.getEingeloggt());
 
                                 if (huser == null)
                                 {
@@ -118,7 +117,7 @@ public class Chatserver extends Server
                     send(pClientIP, pClientPort, "Erfolgreich abgemeldet!");
                     break;
 
-                    case "!updaterequest":
+                    /*case "!updaterequest":
                     JSONObject update = new JSONObject();
                     raum.toFirst();
                     int raumid = 0;
@@ -130,7 +129,7 @@ public class Chatserver extends Server
                         puser.toFirst();
                         int i = 0;
                         JSONArray preU = new JSONArray();
-                        while(puser.hasAccess()&& !puser.isEmpty()) // Geht durch alle User eines Raumes
+                        while(puser.hasAccess()&& !puser.isEmpty()) //geht durch alle User eines Raumes
                         {
                             Userpass pu = (Userpass) puser.getObject();
                             String a = pu.getName();
@@ -139,10 +138,11 @@ public class Chatserver extends Server
                             }
                             catch(Exception e)
                             {
+                                
                             }
                         }
                     }
-                    break;
+                    break;*/
 
                     case "!quit":
                     this.closeConnection(pClientIP, pClientPort);
@@ -219,12 +219,14 @@ public class Chatserver extends Server
                             int b = Integer.parseInt(separated[1]);
                             Room a = new Room(b, separated[2]);
                             raum.append(a);
+                            send(pClientIP, pClientPort, "Der Raum " + separated[1] + " wurde mit dem Passwort " + separated[2] + " erstellt.");
                         }
                         else
                         {
                             int b = Integer.parseInt(separated[1]);
                             Room a = new Room(b, null);
                             raum.append(a);
+                            send(pClientIP, pClientPort, "Der Raum " + separated[1] + " wurde erstellt");
                         }
                     }
                     else
