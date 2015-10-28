@@ -21,8 +21,8 @@ public class Chatserver extends Server
      */
     public void processNewConnection(String pClientIP, int pClientPort)
     {
-        this.sendToAll("Neue Verbindung von" + pClientIP + " auf Port " + pClientPort);
-        send(pClientIP, pClientPort, "Bitte Eingloggen!!!!!11!!");
+        this.sendToAll("Server: Neue Verbindung von" + pClientIP + " auf Port " + pClientPort);
+        send(pClientIP, pClientPort, "Server: Bitte Eingloggen!");
         Identitaet a = new Identitaet(pClientIP, pClientPort);
         identitat.append(a);
     }
@@ -46,7 +46,7 @@ public class Chatserver extends Server
                 }
                 else
                 {
-                    this.send(pClientIP,pClientPort,"Bitte zuerst einloggen!");
+                    this.send(pClientIP,pClientPort,"Server: Bitte zuerst einloggen!");
                 }
             }
 
@@ -75,11 +75,11 @@ public class Chatserver extends Server
                                     {
                                         user.setEingeloggt(true);
                                         user.setName(separated[1]);
-                                        send(pClientIP, pClientPort, "Anmeldung war erfolgreich!");
+                                        send(pClientIP, pClientPort, "Server: Anmeldung war erfolgreich!");
                                     }
                                     else
                                     {
-                                        send(pClientIP, pClientPort, "Identität ist nicht bekannt!");
+                                        send(pClientIP, pClientPort, "Server: Identität ist nicht bekannt!");
                                     }
                                 }
                                 else 
@@ -88,33 +88,36 @@ public class Chatserver extends Server
                                     huser.setName(null);
                                     String bClientIP = huser.getIp();
                                     int bClientPort = huser.getPort();
-                                    send(bClientIP, bClientPort, "Sie wurden abgemeldet!");
+                                    send(bClientIP, bClientPort, "Server: Sie wurden abgemeldet!");
                                     user.setEingeloggt(true);
                                     user.setName(separated[1]);
-                                    send(pClientIP, pClientPort, "Anmeldung war erfolgreich!!");
+                                    send(pClientIP, pClientPort, "Server: Anmeldung war erfolgreich!!");
                                 }
                             }
                             else
                             {
-                                send(pClientIP, pClientPort, "Falsche Benutzerdaten!");
+                                send(pClientIP, pClientPort, "Server: Falsche Benutzerdaten!");
                             }
                         }
                         else
                         {
-                            send(pClientIP, pClientPort, "Falsche Benutzerdaten!");
+                            send(pClientIP, pClientPort, "Server: Falsche Benutzerdaten!");
                         }
                     }
                     else
                     {
-                        send(pClientIP, pClientPort, "Bitte Benutzername und Passwort eingeben!");
+                        send(pClientIP, pClientPort, "Server: Bitte Benutzername und Passwort eingeben!");
                     }
                     break;
 
-                    case "!logout": //nur wenn angemeldet
-                    Identitaet user = this.getIdentitaet(pClientIP,pClientPort);
-                    user.setEingeloggt(false);
-                    user.setName(null);
-                    send(pClientIP, pClientPort, "Erfolgreich abgemeldet!");
+                    case "!logout": //client aus allen räumen entfernen
+                    if (getIdentitaet(pClientIP,pClientPort).getEingeloggt())
+                    {
+                        Identitaet user = this.getIdentitaet(pClientIP,pClientPort);
+                        user.setEingeloggt(false);
+                        user.setName(null);
+                        send(pClientIP, pClientPort, "Server: Erfolgreich abgemeldet!");
+                    }
                     break;
 
                     /*case "!updaterequest": //nur wenn angemeldet
@@ -149,90 +152,112 @@ public class Chatserver extends Server
                     break;
 
                     /*Private Nachricht mit !p <Username> <Nachricht>*/
-                    case "!p": //nur wenn angemeldet
-                    if (separated[1] != null)
+                    case "!p":
+                    if (getIdentitaet(pClientIP,pClientPort).getEingeloggt())
                     {
-                        if (separated[2] != null)
+                        if (separated[1] != null)
                         {
-                            Identitaet huser = this.getIdentitaet2(separated[1]);
-                            String eClientIP = huser.getIp();
-                            int eClientPort = huser.getPort();
-                            int a = 3;
-                            String message = separated[2];
-                            while (separated[a] != null)
+                            if (separated[2] != null)
                             {
-                                message = message + " " + separated[a];
+                                Identitaet huser = this.getIdentitaet2(separated[1]);
+                                String eClientIP = huser.getIp();
+                                int eClientPort = huser.getPort();
+                                int a = 3;
+                                String message = separated[2];
+                                while (separated[a] != null)
+                                {
+                                    message = message + " " + separated[a];
+                                }
+                                send(eClientIP, eClientPort, message);
                             }
-                            send(eClientIP, eClientPort, message);
+                            else
+                            {
+                                send(pClientIP, pClientPort, "Server: Bitte Nachricht eingeben!");
+                            }
                         }
                         else
                         {
-                            send(pClientIP, pClientPort, "Bitte Nachricht eingeben!");
+                            send(pClientIP, pClientPort, "Server: Bitte Empfänger angeben!");
                         }
                     }
                     else
                     {
-                        send(pClientIP, pClientPort, "Bitte Empfänger angeben!");
+                        send(pClientIP, pClientPort, "Server: Bitte erst anmelden!");
                     }
                     break;
 
                     /*Raum betreten mit !jr <Raumnummer> <Passwort>*/
-                    case "!jr": //nur wenn angemeldet
-                    if (separated[1] != null)
+                    case "!jr":
+                    if (getIdentitaet(pClientIP,pClientPort).getEingeloggt())
                     {
-                        raum.toFirst();
-                        int b = Integer.parseInt(separated[1]);
-                        while (raum.hasAccess() && !raum.isEmpty())
+                        if (separated[1] != null)
                         {
-                            Room a = (Room) raum.getObject();
-                            if(a.getRoomid() == b)
+                            raum.toFirst();
+                            int b = Integer.parseInt(separated[1]);
+                            while (raum.hasAccess() && !raum.isEmpty())
                             {
-                                if (a.checkPassword(separated[2]))
+                                Room a = (Room) raum.getObject();
+                                if(a.getRoomid() == b)
                                 {
-                                    a.addUser(this.getIdentitaet(pClientIP, pClientPort));      //name und status wird nicht übernommen 
-                                    send(pClientIP, pClientPort, "Erfolgreich Raum " + b + " beigerteten");
-                                    break;
+                                    if (a.checkPassword(separated[2]))
+                                    {
+                                        a.addUser(this.getIdentitaet(pClientIP, pClientPort));    
+                                        send(pClientIP, pClientPort, "Server: Erfolgreich Raum " + b + " beigetreten");
+                                        break;
+                                    }
+                                    else
+                                    {
+                                        send(pClientIP, pClientPort, "Server: Falsches Passwort!");
+                                        break;
+                                    }
                                 }
                                 else
                                 {
-                                    send(pClientIP, pClientPort, "Falsches Passwort!");
-                                    break;
+                                    raum.next();
                                 }
                             }
-                            else
-                            {
-                                raum.next();
-                            }
+                            send(pClientIP, pClientPort, "Server: Raum nicht vorhanden!"); //wieso wird das ausgegeben?
+                        }
+                        else
+                        {
+                            send(pClientIP, pClientPort, "Server: Bitte Raumnummer eingeben!");
                         }
                     }
                     else
                     {
-                        send(pClientIP, pClientPort, "Bitte Raumnummer eingeben!");
+                        send(pClientIP, pClientPort, "Server: Bitte erst anmelden!");
                     }
                     break;
 
                     /*Raum erstellen mit !cr <Raumnummer> <Passowrt>*/
-                    case "!cr": //nur wenn angemeldet
-                    if (separated[1] != null)
+                    case "!cr":
+                    if (getIdentitaet(pClientIP,pClientPort).getEingeloggt())
                     {
-                        if (separated[2] != null)   //gibt errors wenn kein passwort
+                        if (separated[1] != null)
                         {
-                            int b = Integer.parseInt(separated[1]);
-                            Room a = new Room(b, separated[2]);
-                            raum.append(a);
-                            send(pClientIP, pClientPort, "Der Raum " + separated[1] + " wurde mit dem Passwort " + separated[2] + " erstellt.");
+                            if (separated[2] != null)   //gibt errors wenn kein passwort
+                            {
+                                int b = Integer.parseInt(separated[1]);
+                                Room a = new Room(b, separated[2]);
+                                raum.append(a);
+                                send(pClientIP, pClientPort, "Server: Der Raum " + separated[1] + " wurde mit dem Passwort " + separated[2] + " erstellt.");
+                            }
+                            else
+                            {
+                                int b = Integer.parseInt(separated[1]);
+                                Room a = new Room(b, null);
+                                raum.append(a);
+                                send(pClientIP, pClientPort, "Server: Der Raum " + separated[1] + " wurde erstellt");
+                            }
                         }
                         else
                         {
-                            int b = Integer.parseInt(separated[1]);
-                            Room a = new Room(b, null);
-                            raum.append(a);
-                            send(pClientIP, pClientPort, "Der Raum " + separated[1] + " wurde erstellt");
+                            send(pClientIP, pClientPort, "Server: Bitte Raumnummer eingeben!");
                         }
                     }
                     else
                     {
-                        send(pClientIP, pClientPort, "Bitte Raumnummer eingeben!");
+                        send(pClientIP, pClientPort, "Server: Bitte erst anmelden!");
                     }
                     break;
                 }
@@ -285,6 +310,6 @@ public class Chatserver extends Server
 
     public void processClosedConnection(String pClientIP, int pClientPort)
     {
-        this.sendToAll(pClientIP + " " + pClientPort + " auf Wiedersehen");
+        this.sendToAll("Server: " + pClientIP + " " + pClientPort + " auf Wiedersehen");
     }
 }

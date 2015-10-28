@@ -6,9 +6,10 @@ public class ChatClient extends Client
     /**
      * Constructor for objects of class ChatClient
      */
-    public ChatClient(String pServerIP, int pServerPort)
+    public ChatClient(/*String pServerIP, int pServerPort*/)
     {
-        super(pServerIP, pServerPort); 
+        //super(pServerIP, pServerPort); 
+        super("127.0.0.1", 2000); 
         List room = new List();
 
     }
