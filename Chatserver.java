@@ -42,7 +42,7 @@ public class Chatserver extends Server
             {
                 if(this.getIdentitaet(pClientIP,pClientPort).getEingeloggt())
                 {
-                    this.sendToAll(pMessage);
+                    this.sendToAll(getIdentitaet(pClientIP,pClientPort).getName() + ": " + pMessage);
                 }
                 else
                 {
@@ -177,7 +177,7 @@ public class Chatserver extends Server
                                 String message = separated[2];
                                 while (separated[a] != null)
                                 {
-                                    message = message + " " + separated[a];
+                                    message = getIdentitaet(pClientIP,pClientPort).getName() + ": " + message + " " + separated[a];
                                 }
                                 send(eClientIP, eClientPort, message);
                             }
