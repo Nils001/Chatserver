@@ -214,12 +214,12 @@ public class Chatserver extends Server
                                     {
                                         a.addUser(this.getIdentitaet(pClientIP, pClientPort));    
                                         send(pClientIP, pClientPort, "Server: Erfolgreich Raum " + b + " beigetreten");
-                                        break;
+                                        return;
                                     }
                                     else
                                     {
                                         send(pClientIP, pClientPort, "Server: Falsches Passwort!");
-                                        break;
+                                        return;
                                     }
                                 }
                                 else
