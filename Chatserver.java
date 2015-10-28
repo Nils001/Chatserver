@@ -1,4 +1,4 @@
-//import org.json.*;
+import org.json.*;
 
 public class Chatserver extends Server
 {
@@ -120,32 +120,43 @@ public class Chatserver extends Server
                     }
                     break;
 
-                    /*case "!updaterequest": //nur wenn angemeldet
+                    case "!updaterequest": //nur wenn angemeldet
                     JSONObject update = new JSONObject();
                     raum.toFirst();
                     int raumid = 0;
                     while(raum.hasAccess()&&!raum.isEmpty()) // geht durch alle Räume
                     {
-                    Room pr =(Room) raum.getObject();
-                    raum.toFirst();
-                    List puser = pr.getList();
-                    puser.toFirst();
-                    int i = 0;
-                    JSONArray preU = new JSONArray();
-                    while(puser.hasAccess()&& !puser.isEmpty()) //geht durch alle User eines Raumes
-                    {
-                    Userpass pu = (Userpass) puser.getObject();
-                    String a = pu.getName();
-                    try{
-                    preU.put(i,a);
-                    }
-                    catch(Exception e)
-                    {
+                        Room pr =(Room) raum.getObject();
+                        raum.toFirst();
+                        List puser = pr.getList();
+                        puser.toFirst();
+                        int i = 0;
+                        JSONObject preRoom = new JSONObject();
+                        JSONArray preU = new JSONArray();//USer Array
+                        while(puser.hasAccess()&& !puser.isEmpty()) //geht durch alle User eines Raumes
+                        {
+                            Identitaet pu = (Identitaet) puser.getObject();
+                            String a = pu.getName();
+                            try{
+                                preU.put(i,a);
+                            }
+                            catch(Exception e)
+                            {
 
+                            }
+                            i++;
+                        }
+                        try{
+                            preRoom.put("user",preU);
+                            preRoom.put("useranzahl",i);
+                            update.put(Integer.toString(raumid),preRoom);
+                        }
+                        catch(Exception e)
+                        {
+
+                        }
                     }
-                    }
-                    }
-                    break;*/
+                    break;
 
                     case "!quit":
                     this.closeConnection(pClientIP, pClientPort);
@@ -311,5 +322,34 @@ public class Chatserver extends Server
     public void processClosedConnection(String pClientIP, int pClientPort)
     {
         this.sendToAll("Server: " + pClientIP + " " + pClientPort + " auf Wiedersehen");
+    }
+
+    public void test()
+    {
+
+        JSONObject update = new JSONObject();
+        raum.toFirst();
+        int raumid = 0;
+        while(raum.hasAccess()&&!raum.isEmpty()) // geht durch alle Räume
+        {
+            Room pr =(Room) raum.getObject();
+            raum.toFirst();
+            List puser = pr.getList();
+            puser.toFirst();
+            int i = 0;
+            JSONArray preU = new JSONArray();
+            while(puser.hasAccess()&& !puser.isEmpty()) //geht durch alle User eines Raumes
+            {
+                Userpass pu = (Userpass) puser.getObject();
+                String a = pu.getName();
+                try{
+                    preU.put(i,a);
+                }
+                catch(Exception e)
+                {
+
+                }
+            }
+        }
     }
 }
