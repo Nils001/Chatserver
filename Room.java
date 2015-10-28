@@ -70,7 +70,6 @@ public class Room
                 {
                     if(a.getName().equals(pName))
                     {
-                        System.out.println("System: Benutzer schon vorhanden");
                         return true;
                     }
                     else
@@ -84,7 +83,6 @@ public class Room
                 }
             }
         }
-        System.out.println("System: Benutzer noch nicht vorhanden");
         return false;
     }
 
@@ -93,11 +91,9 @@ public class Room
         if (pIdentitaet != null)
         {
             String name = pIdentitaet.getName();
-            System.out.println("System: Benutzer akzeptiert");
             if (!checkUser(name))
             {
                 userlist.append(pIdentitaet);
-                System.out.println("System: Benutzer hinzugefügt");
             }
         }
     }
