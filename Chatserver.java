@@ -1,4 +1,4 @@
-import org.json.*;
+//import org.json.*;
 
 public class Chatserver extends Server
 {
@@ -128,7 +128,7 @@ public class Chatserver extends Server
                     }
                     break;
 
-                    case "!updaterequest": 
+                    /*case "!updaterequest": 
                     JSONObject update = new JSONObject();
                     raum.toFirst();
                     int raumid = 0;
@@ -166,7 +166,7 @@ public class Chatserver extends Server
 
                         }
                     }
-                    break;
+                    break;*/
 
                     case "!quit":
                     if (getIdentitaet(pClientIP,pClientPort).getEingeloggt())
@@ -478,7 +478,7 @@ public class Chatserver extends Server
         this.sendToAll("Server: " + pClientIP + " " + pClientPort + " auf Wiedersehen");
     }
 
-    public void test()
+    /*public void test()
     {
 
         JSONObject update = new JSONObject();
@@ -505,5 +505,5 @@ public class Chatserver extends Server
                 }
             }
         }
-    }
+    }*/
 }

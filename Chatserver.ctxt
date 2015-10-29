@@ -12,6 +12,4 @@ comment4.params=pName
 comment4.target=Identitaet\ getIdentitaet2(java.lang.String)
 comment5.params=pClientIP\ pClientPort
 comment5.target=void\ processClosedConnection(java.lang.String,\ int)
-comment6.params=
-comment6.target=void\ test()
-numComments=7
+numComments=6
