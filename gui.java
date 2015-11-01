@@ -89,7 +89,7 @@ public class gui
         list.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         list.setBorder(new LineBorder(new Color(0, 0, 0), 1, true));
         list.setBounds(542, 32, 152, 359);
-        frame.getContentPane().add(list);
+        //frame.getContentPane().add(list);
 
         final JTextArea editorPane = new JTextArea();
         editorPane.setBounds(22, 402, 495, 77);
@@ -102,17 +102,18 @@ public class gui
                 {
                     String a = editorPane.getText();
                     cc.nachrichtVersenden(a);
+                    editorPane.setText("");
                 }
             });
         btnNewButton.setBounds(542, 402, 152, 23);
         frame.getContentPane().add(btnNewButton);
 
-        JButton btnQuit = new JButton("Beenden");
+        JButton btnQuit = new JButton("Update");
         btnQuit.addActionListener(new ActionListener() 
             {
                 public void actionPerformed(ActionEvent arg0) 
                 {
-                    cc.nachrichtVersenden("!quit");
+                    textArea.setText(cc.getMainUpdateString());
                 }
             });
         btnQuit.setBounds(542, 436, 152, 23);

@@ -56,7 +56,6 @@ public class Chatserver extends Server
             {
                 switch (separated[0])
                 {
-
                     /*Login mit !login <Username> <Passwort>*/
                     case "!login":
                     if (separated.length >= 3)
@@ -134,53 +133,51 @@ public class Chatserver extends Server
                     int raumid = 0;
                     while(raum.hasAccess()&&!raum.isEmpty()) 
                     {
-                        Room pr =(Room) raum.getObject();
-                        raum.toFirst();
-                        List puser = pr.getList();
-                        puser.toFirst();
-                        int i = 0;
-                        JSONObject preRoom = new JSONObject();
-                        JSONArray preU = new JSONArray();//USer Array
-                        while(puser.hasAccess()&& !puser.isEmpty())
-                        {
-                            Identitaet pu = (Identitaet) puser.getObject();
-                            String a = pu.getName();
-                            try{
-                                preU.put(i,a);
-                            }
-                            catch(Exception e)
-                            {
+                    Room pr =(Room) raum.getObject();
+                    raum.toFirst();
+                    List puser = pr.getList();
+                    puser.toFirst();
+                    int i = 0;
+                    JSONObject preRoom = new JSONObject();
+                    JSONArray preU = new JSONArray();//USer Array
+                    while(puser.hasAccess()&& !puser.isEmpty())
+                    {
+                    Identitaet pu = (Identitaet) puser.getObject();
+                    String a = pu.getName();
+                    try{
+                    preU.put(i,a);
+                    }
+                    catch(Exception e)
+                    {
 
-                            }
-                            i++;
-                        }
+                    }
+                    i++;
+                    }
 
-                        try
-                        {
-                            preRoom.put("user",preU);
-                            preRoom.put("useranzahl",i);
-                            update.put(Integer.toString(raumid),preRoom);
-                        }
-                        catch(Exception e)
-                        {
+                    try
+                    {
+                    preRoom.put("user",preU);
+                    preRoom.put("useranzahl",i);
+                    update.put(Integer.toString(raumid),preRoom);
+                    }
+                    catch(Exception e)
+                    {
 
-                        }
+                    }
                     }
                     break;*/
-                    
-                    case "!getrooms": // returns !rooms |roomid user|roomid user|
-                    String preRoom = "!rooms |";
+
+                    /*case "!getrooms": // returns !rooms |roomid user|roomid user|
+                    String preRoom = "!rooms ";//String preRoom = "!rooms |";
                     raum.toFirst();
                     while(raum.hasAccess()&&!raum.isEmpty())
                     {
-                        Room a = (Room) raum.getObject();
-                        preRoom = preRoom + a.getRoomid()+ " "+a.getUserAnzahl()+"|";
-                        raum.next();
+                    Room a = (Room) raum.getObject();
+                    preRoom = preRoom + a.getRoomid()+ " "+a.getUserAnzahl() + " ";//+"|";
+                    raum.next();
                     }
                     send(pClientIP, pClientPort, preRoom);
-                    break;
-                    
-                    
+                    break;*/
 
                     case "!quit":
                     if (getIdentitaet(pClientIP,pClientPort).getEingeloggt())
@@ -263,9 +260,17 @@ public class Chatserver extends Server
                                         }
                                         else
                                         {
-                                            a.addUser(this.getIdentitaet(pClientIP, pClientPort));    
-                                            send(pClientIP, pClientPort, "Server: Erfolgreich Raum " + b + " beigetreten!");
-                                            return;
+                                            if (!a.getPass())
+                                            {
+                                                a.addUser(this.getIdentitaet(pClientIP, pClientPort));    
+                                                send(pClientIP, pClientPort, "Server: Erfolgreich Raum " + b + " beigetreten!");
+                                                return;
+                                            }
+                                            else
+                                            {
+                                                send(pClientIP, pClientPort, "Server: Bitte Passwort eingeben!");
+                                                return;
+                                            }
                                         }
                                     }
                                     else
@@ -425,6 +430,45 @@ public class Chatserver extends Server
                     }
                     break;
 
+                    /*Räume plus User zahlen mit !rr*/
+                    case "!rr":
+                    if (getIdentitaet(pClientIP,pClientPort).getEingeloggt())
+                    {
+                        send(pClientIP, pClientPort, "---------------------------------------------------------------------");
+                        send(pClientIP, pClientPort, "Räume:");
+                        raum.toFirst();
+                        while (raum.hasAccess() && !raum.isEmpty())
+                        {
+                            Room a = (Room) raum.getObject();
+                            List help = a.getList();
+                            int b = 0;
+                            help.toFirst();
+                            while (help.hasAccess() && !help.isEmpty())
+                            {
+                                b++;
+                                help.next();
+                            }
+                            int c = a.getRoomid();
+                            String d = "";
+                            if (!a.getPass())
+                            {
+                                d = "öffentlichen";
+                            }
+                            else
+                            {
+                                d = "privaten";
+                            }
+                            send(pClientIP, pClientPort, "Im " + d + " Raum " + c + " befinden sich " + b + " Personen.");
+                            raum.next();
+                        }
+                        send(pClientIP, pClientPort, "---------------------------------------------------------------------");
+                    }
+                    else
+                    {
+                        send(pClientIP, pClientPort, "Server: Bitte erst anmelden!");
+                    }
+                    break;
+
                     case "!help":
                     send(pClientIP, pClientPort, "---------------------------------------------------------------------");
                     send(pClientIP, pClientPort, "Befehle:");
@@ -437,6 +481,7 @@ public class Chatserver extends Server
                     send(pClientIP, pClientPort, "Raum betreten: !jr <Raumnummer> <Passwort>");
                     send(pClientIP, pClientPort, "Nachricht an alle in einen Raum sende: !rm <Raumnummer> <Message>");
                     send(pClientIP, pClientPort, "alle User in einem Raum: !ru <Raumnummer>");
+                    send(pClientIP, pClientPort, "alle Räume mit Anzahl von Usern: !rr");
                     send(pClientIP, pClientPort, "---------------------------------------------------------------------");
                     break;
                 }
@@ -495,29 +540,29 @@ public class Chatserver extends Server
     /*public void test()
     {
 
-        JSONObject update = new JSONObject();
-        raum.toFirst();
-        int raumid = 0;
-        while(raum.hasAccess()&&!raum.isEmpty()) // geht durch alle Räume
-        {
-            Room pr =(Room) raum.getObject();
-            raum.toFirst();
-            List puser = pr.getList();
-            puser.toFirst();
-            int i = 0;
-            JSONArray preU = new JSONArray();
-            while(puser.hasAccess()&& !puser.isEmpty()) //geht durch alle User eines Raumes
-            {
-                Userpass pu = (Userpass) puser.getObject();
-                String a = pu.getName();
-                try{
-                    preU.put(i,a);
-                }
-                catch(Exception e)
-                {
+    JSONObject update = new JSONObject();
+    raum.toFirst();
+    int raumid = 0;
+    while(raum.hasAccess()&&!raum.isEmpty()) // geht durch alle Räume
+    {
+    Room pr =(Room) raum.getObject();
+    raum.toFirst();
+    List puser = pr.getList();
+    puser.toFirst();
+    int i = 0;
+    JSONArray preU = new JSONArray();
+    while(puser.hasAccess()&& !puser.isEmpty()) //geht durch alle User eines Raumes
+    {
+    Userpass pu = (Userpass) puser.getObject();
+    String a = pu.getName();
+    try{
+    preU.put(i,a);
+    }
+    catch(Exception e)
+    {
 
-                }
-            }
-        }
+    }
+    }
+    }
     }*/
 }

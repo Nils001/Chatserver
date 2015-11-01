@@ -4,12 +4,21 @@ public class Room
     private List userlist;
     private int roomid;
     private String password;
+    private boolean pass;
 
     //null für Raum ohne PW
     public Room(int pRoomid, String pPassword)
     {
         roomid = pRoomid;
         password = pPassword;
+        if (password == null)
+        {
+            pass = false;
+        }
+        else
+        {
+            pass = true;
+        }
         userlist = new List();
     }
 
@@ -28,6 +37,11 @@ public class Room
         {
             return false;
         }
+    }
+    
+    public boolean getPass()
+    {
+        return pass;
     }
 
      public int getUserAnzahl()
