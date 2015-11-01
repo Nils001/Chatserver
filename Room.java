@@ -30,6 +30,22 @@ public class Room
         }
     }
 
+     public int getUserAnzahl()
+    { 
+        userlist.toFirst();
+        int i = 0;
+        while(!userlist.isEmpty() && userlist.hasAccess())
+        {
+            i++;
+            userlist.next();
+            
+            
+        }
+        return i;
+    }
+    
+    
+    
     public Identitaet searchUser(String pName)
     {
         if (pName != null)

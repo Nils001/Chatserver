@@ -32,7 +32,7 @@ public class ChatClient extends Client
 
     public void processMessage(String pMessage)
     {
-        if(pMessage != null)
+       if(pMessage != null)
         {
             char[] msg = pMessage.toCharArray();
             char aus = '!';
@@ -42,15 +42,28 @@ public class ChatClient extends Client
             }
             else
             {
-                String[] separated_ur = pMessage.split(" ", 2);
-                if(separated_ur[0] != null)
+                String[] separated = pMessage.split(" ");
+                switch(separated[0])
                 {
-                    switch (separated_ur[0])
+                    case "!rooms":
+                    String[] split = pMessage.split("|");
+                    for(int i = 0;i<split.length;i++)
                     {
-                        case "!ur":
+                        if(split[i] != "!rooms")
+                        {
+                            
+                            String[] raum = split[i].split(" ");
+                            String raumid = raum[1];
+                            int rid = Integer.parseInt(raumid);
+                            String userzahl = raum[2];
+                            Room a = new Room(rid,null); 
+                        }
 
-                        break;
                     }
+
+                    break;
+
+                   
                 }
             }
         }

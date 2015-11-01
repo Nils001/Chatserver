@@ -167,6 +167,20 @@ public class Chatserver extends Server
                         }
                     }
                     break;*/
+                    
+                    case "!getrooms": // returns !rooms |roomid user|roomid user|
+                    String preRoom = "!rooms |";
+                    raum.toFirst();
+                    while(raum.hasAccess()&&!raum.isEmpty())
+                    {
+                        Room a = (Room) raum.getObject();
+                        preRoom = preRoom + a.getRoomid()+ " "+a.getUserAnzahl()+"|";
+                        raum.next();
+                    }
+                    send(pClientIP, pClientPort, preRoom);
+                    break;
+                    
+                    
 
                     case "!quit":
                     if (getIdentitaet(pClientIP,pClientPort).getEingeloggt())
